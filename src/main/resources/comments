@@ -1,0 +1,12 @@
+16/02/2022
+
+back en place et fonctionnel, arret du tuto à l'etape "creation d'une classe" Order.
+
+Cette classe et son controlleur servent à demontrer que l'appli, une fois en REST ne sert pas seulement à fournir des 'pretty uri' et de formatter les données en json, mais aussi à creer des liens dynamiques selon l'etat d'un objet.
+Plutot que de faire une classe Order qui ne serait pas dans le theme des heros, il serait possible d'ajouter des proprietes à la classe Hero existante qui pourraient illustrer le propos du tutoriel
+
+On pourrait imaginer une propriete status et detail.
+
+status: dispo, en mission, mort. chaque status à ses détails associés
+
+si le hero est mort, on ne peut pas l'editer par exemple, ou si il est en mission, on ne peut pas le delete

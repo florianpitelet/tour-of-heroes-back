@@ -14,7 +14,6 @@ import org.springframework.hateoas.mediatype.problem.Problem;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin
 @RestController
 public class HeroController {
 
@@ -38,21 +36,22 @@ public class HeroController {
 
     // RECUPERATION D UN ELEMENT
     @GetMapping("/hero/{id}")
-    Hero one(@PathVariable Long id) {
+    EntityModel<Hero> one(@PathVariable Long id) {
 
         Hero hero = repository.findById(id)
                 .orElseThrow(() -> new Hero404(id));
-        return hero;
+        return assembler.toModel(hero);
 
     }
 
     // RECUPERATION DE TOUS LES ELEMENTS
     @GetMapping("/all")
-    List<Hero> all() {
-        List<Hero> heroList = repository.findAll();
-
-        return heroList;
-               
+    CollectionModel<EntityModel<Hero>> all() {
+        List<EntityModel<Hero>> heroList = repository.findAll().stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(heroList,
+                linkTo(methodOn(HeroController.class).all()).withSelfRel());
     }
 
     // CEATION D UN NOUVEL ELEMENT
